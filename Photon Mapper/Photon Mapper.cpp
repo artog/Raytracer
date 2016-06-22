@@ -2,10 +2,18 @@
 //
 
 #include "stdafx.h"
-GLuint vertexArrayObject, shaderProgram;
-
+#include "Pathtracer.h"
+#include "int2.h"
 
 using namespace std;
+
+const int MAX_SAMPLES_PER_PIXEL = 1024;
+
+GLuint vertexArrayObject, shaderProgram;
+
+Pathtracer pathtracer;
+int subsample = 1;
+bool debug = true;
 
 void initGL()
 {
@@ -14,10 +22,8 @@ void initGL()
 	// Print information about GL and ensure that we've got GL.30
 	startupGLDiagnostics();
 	// Workaround for AMD, which hopefully will not be necessary in the near future...
-	if (!glBindFragDataLocation)
-	{
-		glBindFragDataLocation = glBindFragDataLocationEXT;
-	}
+	if (!glBindFragDataLocation) { glBindFragDataLocation = glBindFragDataLocationEXT; }
+	
 	// Define the positions for each of the three vertices of the triangle
 	const float positions[] = {
 		1.0f,   -1.0f, 0.0f,
@@ -44,9 +50,8 @@ void initGL()
 	glVertexAttribPointer(0, 3, GL_FLOAT, false/*normalized*/, 0/*stride*/, 0/*offset*/);
 	glEnableVertexAttribArray(0); // Enable the vertex position attribute
 
-								  ///////////////////////////////////////////////////////////////////////////
-								  // Create shaders
-								  ///////////////////////////////////////////////////////////////////////////	
+
+	// Create shaders
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -146,35 +151,38 @@ void display(void)
 	// Shader Program
 	glUseProgram(shaderProgram);			// Set the shader program to use for this draw call
 
-											///////////////////////////////////////////////////////////////////////////
-											// Trace one path per pixel
-											///////////////////////////////////////////////////////////////////////////
-	if (g_pathtracer.m_frameBufferSamples < MAX_SAMPLES_PER_PIXEL)
-		g_pathtracer.tracePrimaryRays();
+	if (debug) {
 
-	///////////////////////////////////////////////////////////////////////////
-	// Create and upload raytracer framebuffer as a texture
-	///////////////////////////////////////////////////////////////////////////
-	static GLuint framebufferTexture = 0;
-	if (framebufferTexture == 0) glGenTextures(1, &framebufferTexture);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, framebufferTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F,
-		g_pathtracer.m_frameBufferSize.x,
-		g_pathtracer.m_frameBufferSize.y,
-		0, GL_RGB, GL_FLOAT, g_pathtracer.m_frameBuffer);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glUniform1i(glGetUniformLocation(shaderProgram, "framebuffer"), 0);
-	glUniform1i(glGetUniformLocation(shaderProgram, "framebufferSamples"), g_pathtracer.m_frameBufferSamples);
+	}
+	else {
 
-	// Bind the vertex array object that contains all the vertex data.
-	glBindVertexArray(vertexArrayObject);
-	// enable vertex attribute arrays 0 and 1 for the currently bound vertex array object.
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		if (pathtracer.frameBufferSamples < MAX_SAMPLES_PER_PIXEL) {
+			//pathtracer.tracePrimaryRays();
+		}
+		///////////////////////////////////////////////////////////////////////////
+		// Create and upload raytracer framebuffer as a texture
+		///////////////////////////////////////////////////////////////////////////
+		static GLuint framebufferTexture = 0;
+		if (framebufferTexture == 0) glGenTextures(1, &framebufferTexture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, framebufferTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F,
+			pathtracer.frameBufferSize.x,
+			pathtracer.frameBufferSize.y,
+			0, GL_RGB, GL_FLOAT, pathtracer.frameBuffer);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glUniform1i(glGetUniformLocation(shaderProgram, "framebuffer"), 0);
+		glUniform1i(glGetUniformLocation(shaderProgram, "framebufferSamples"), pathtracer.frameBufferSamples);
 
-	glUseProgram(0);						// "unsets" the current shader program. Not really necessary.
-	CHECK_GL_ERROR();
+		// Bind the vertex array object that contains all the vertex data.
+		glBindVertexArray(vertexArrayObject);
+		// enable vertex attribute arrays 0 and 1 for the currently bound vertex array object.
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+		glUseProgram(0);						// "unsets" the current shader program. Not really necessary.
+		CHECK_GL_ERROR();
+	}
 
 	///////////////////////////////////////////////////////////////////////////
 	// Print some useful information
@@ -190,18 +198,18 @@ void display(void)
 		lastFrameTime = glutGet(GLUT_ELAPSED_TIME);
 
 		char title[50];
-		sprintf(title, "Pathtracer - FPS: %2.3f", spf);
+		sprintf_s(title, "Pathtracer - FPS: %2.3f", spf);
 
 		glutSetWindowTitle(title);
 	}
 	{
 		stringstream ss;
-		ss << "Samples per pixel: " << g_pathtracer.m_frameBufferSamples;
+		ss << "Samples per pixel: " << pathtracer.frameBufferSamples;
 		printString(10, 10 + 14, ss.str());
 	}
 	{
 		stringstream ss;
-		ss << "Subsampling: " << 1.0f / float(g_subsample);
+		ss << "Subsampling: " << 1.0f / float(subsample);
 		printString(10, 10 + 0, ss.str());
 	}
 
@@ -231,8 +239,8 @@ void handleKeys(unsigned char key, int /*x*/, int /*y*/)
 	}
 	case 'p':
 	{
-		int w = g_pathtracer.m_frameBufferSize.x;
-		int h = g_pathtracer.m_frameBufferSize.y;
+		int w = pathtracer.frameBufferSize.x;
+		int h = pathtracer.frameBufferSize.y;
 
 		// Allocate a 32-bit dib
 		FIBITMAP *dib = FreeImage_Allocate(w, h, 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
@@ -241,9 +249,9 @@ void handleKeys(unsigned char key, int /*x*/, int /*y*/)
 		for (unsigned y = 0; y < FreeImage_GetHeight(dib); y++) {
 			BYTE *bits = FreeImage_GetScanLine(dib, y);
 			for (unsigned x = 0; x < FreeImage_GetWidth(dib); x++) {
-				float r = min(1.0f, pow(g_pathtracer.m_frameBuffer[y*w + x].x / g_pathtracer.m_frameBufferSamples, 1.0f / 2.2f));
-				float g = min(1.0f, pow(g_pathtracer.m_frameBuffer[y*w + x].y / g_pathtracer.m_frameBufferSamples, 1.0f / 2.2f));
-				float b = min(1.0f, pow(g_pathtracer.m_frameBuffer[y*w + x].z / g_pathtracer.m_frameBufferSamples, 1.0f / 2.2f));
+				float r = min(1.0f, pow(pathtracer.frameBuffer[y*w + x].x / pathtracer.frameBufferSamples, 1.0f / 2.2f));
+				float g = min(1.0f, pow(pathtracer.frameBuffer[y*w + x].y / pathtracer.frameBufferSamples, 1.0f / 2.2f));
+				float b = min(1.0f, pow(pathtracer.frameBuffer[y*w + x].z / pathtracer.frameBufferSamples, 1.0f / 2.2f));
 				bits[FI_RGBA_RED] = BYTE(r * 255.0);
 				bits[FI_RGBA_GREEN] = BYTE(g * 255.0);
 				bits[FI_RGBA_BLUE] = BYTE(b * 255.0);

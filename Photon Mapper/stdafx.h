@@ -21,10 +21,19 @@
 #include <string.h>
 
 // GL stuff
-#include "libs\glew\glew.h"
-#include "libs\freeglut\glut.h"
-#include "libs\freeglut\freeglut.h"
-#include "libs\glutil.h"
+#include <GL\glew.h>
+#include <GL\glut.h>
+#include <GL\freeglut.h>
+#include "glutil.h"
+
+
+// Image stuff
+#include <IL\il.h>
+#include <IL\ilu.h>
+#include <IL\ilut.h>
+#include "FreeImage.h"
+
+#include "linmath.h"
 
 
 // TODO: reference additional headers your program requires here

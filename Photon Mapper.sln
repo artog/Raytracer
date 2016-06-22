@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Photon Mapper", "Photon Mapper\Photon Mapper.vcxproj", "{E2FAD1D0-AEE2-47F7-AE75-9EB459FEB70A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2E851FC1-D820-45A8-B3C5-19450DF20766} = {2E851FC1-D820-45A8-B3C5-19450DF20766}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "linmath", "linmath\linmath.vcxproj", "{2E851FC1-D820-45A8-B3C5-19450DF20766}"
 EndProject
