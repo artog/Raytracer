@@ -1,4 +1,4 @@
-#ifdef WIN32
+#ifdef _WIN32
   #define WIN32_LEAN_AND_MEAN
   #define VC_EXTRALEAN
   #define NOMINMAX //          - Macros min(a,b) and max(a,b)
@@ -10,7 +10,7 @@
 #endif // ! __linux__
 
 #include <GL/glew.h>
-#include <GL/glut.h>
+#include <GL/GLUT.H>
 
 #include "float2.h"
 #include "float3x3.h"
@@ -24,6 +24,8 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+
+#pragma comment(lib,"glew32.lib")
 
 using std::vector; 
 using namespace chag; 
@@ -124,7 +126,7 @@ const char *textFileRead( const char *fn, bool fatalError )
 
 	FILE *fp;
 	char *content = NULL;
-	int count = 0;
+	size_t count = 0;
 
 	if( fn != NULL ) 
 	{

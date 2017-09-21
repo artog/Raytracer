@@ -140,7 +140,7 @@ void printString(int x, int y, string str)
 void display(void)
 {
 
-	glClearColor(0.2, 0.2, 0.8, 1.0);						// Set clear color
+	glClearColor(0.2f, 0.2f, 0.8f, 1.0f);						// Set clear color
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clears the color buffer and the z-buffer
 
 	int w = glutGet((GLenum)GLUT_WINDOW_WIDTH);
@@ -217,7 +217,7 @@ void display(void)
 	glutSwapBuffers();  // swap front and back buffer. This frame will now been displayed.
 }
 
-void reshape(int w, int h)
+void reshape(int UNUSED(w), int UNUSED(h))
 {
 	
 }
@@ -227,7 +227,7 @@ void idle()
 	glutPostRedisplay();
 }
 
-void handleKeys(unsigned char key, int /*x*/, int /*y*/)
+void handleKeys(unsigned char key, int UNUSED(x), int UNUSED(y))
 {
 	switch (key)
 	{
@@ -245,9 +245,9 @@ void handleKeys(unsigned char key, int /*x*/, int /*y*/)
 		// Allocate a 32-bit dib
 		FIBITMAP *dib = FreeImage_Allocate(w, h, 32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
 		// Calculate the number of bytes per pixel (3 for 24-bit or 4 for 32-bit)
-		int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
+		uint32_t bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
 		for (unsigned y = 0; y < FreeImage_GetHeight(dib); y++) {
-			BYTE *bits = FreeImage_GetScanLine(dib, y);
+			BYTE *bits = FreeImage_GetScanLine(dib, static_cast<int>(y));
 			for (unsigned x = 0; x < FreeImage_GetWidth(dib); x++) {
 				float r = min(1.0f, pow(pathtracer.frameBuffer[y*w + x].x / pathtracer.frameBufferSamples, 1.0f / 2.2f));
 				float g = min(1.0f, pow(pathtracer.frameBuffer[y*w + x].y / pathtracer.frameBufferSamples, 1.0f / 2.2f));
@@ -291,7 +291,7 @@ int main(int argc, char *argv[])
 
 	initGL();
 
-	double k;
+	//double k;
 	glEnable(GL_FRAMEBUFFER_SRGB);
 	glutMainLoop();  /* start the program main loop */
 	return 0;

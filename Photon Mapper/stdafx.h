@@ -5,6 +5,10 @@
 
 #pragma once
 
+#include "disabled_warnings.h"
+#define UNUSED(x) 
+
+
 #ifdef WIN32
 #include <windows.h>
 #endif
