@@ -25,17 +25,8 @@ namespace glutil {
 		cout << "    Vertex:   " << vertexPath << endl;
 		cout << "    Fragment: " << fragmentPath << endl;
 
-        /*
-        DIR* vertFile = opendir(vertexPath.c_str());
-        if (vertFile == nullptr) {
-            glutil::fatal_error("Vertex file not found.");
-        }
-
-        DIR* fragFile = opendir(fragmentPath.c_str());
-        if (fragFile == nullptr) {
-            glutil::fatal_error("Fragment file not found.");
-        }
-        */
+        
+        
         // Read our shaders into the appropriate buffers
 		std::ifstream vs_file(vertexPath);
         std::string vertexSource{
@@ -50,6 +41,17 @@ namespace glutil {
         };
 
 #if 0
+        DIR* vertFile = opendir(vertexPath.c_str());
+        if (vertFile == nullptr) {
+            glutil::fatal_error("Vertex file not found.");
+        }
+
+        DIR* fragFile = opendir(fragmentPath.c_str());
+        if (fragFile == nullptr) {
+            glutil::fatal_error("Fragment file not found.");
+        }
+#endif // 0
+#if 1
         const char *vs = vertexSource.c_str();
         const char *fs = fragmentSource.c_str();
         cout << "Vertex shader:" << endl

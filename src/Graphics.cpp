@@ -23,7 +23,7 @@ void Graphics::render()
     glClearColor(0.f, 0.f, 0.f, 0.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+    glUseProgram(shaderProgram);
     /*
     Render from pixelmap
     */
@@ -38,7 +38,8 @@ void Graphics::render()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glUniform1i(glGetUniformLocation(shaderProgram, "framebuffer"), 0);
-    //glUniform1i(glGetUniformLocation(shaderProgram, "framebufferSamples"), g_pathtracer.m_frameBufferSamples);
+    GLint numSamples = 1;
+    glUniform1i(glGetUniformLocation(shaderProgram, "framebufferSamples"), numSamples);
 
     // Bind the vertex array object that contains all the vertex data.
     glBindVertexArray(vao);
