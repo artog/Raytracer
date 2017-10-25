@@ -23,7 +23,7 @@ public:
     Gui gui;
     bool initialized;
     bool active;
-    GLint width, height;
+    GLuint width, height;
     GLuint shaderProgram;
     GLuint frameBuffer;
     GLuint vao;

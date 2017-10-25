@@ -12,16 +12,16 @@ void main(int* argc, char* argv[]) {
     
     Graphics graphics = Graphics();
 
-    //std::thread raytracerThread([graphics]() {
-        Raytracer raytracer = Raytracer(&graphics);
-    //});
+    Raytracer raytracer = Raytracer(&graphics);
+    
     graphics.init(640, 480);
 
-    //graphics.start();
     raytracer.init();
+    std::thread raytracerThread = std::thread(&Raytracer::trace, raytracer);
 
     graphics.mainLoop();
 
+    raytracerThread.join();
     graphics.finish();
 
 }

@@ -16,7 +16,10 @@ void Graphics::render()
     GLfloat ratio;
     //mat4 viewMatrix, modelViewProjectionMatrix, modelViewMatrix, projectionMatrix;
 
-    glfwGetFramebufferSize(window, &width, &height);
+    int w, h;
+    glfwGetFramebufferSize(window, &w, &h);
+    width = w;
+    height = h;
     ratio = (GLfloat)width / (GLfloat)height;
 
     glViewport(0, 0, width, height);
