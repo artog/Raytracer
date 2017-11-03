@@ -2,6 +2,8 @@
 #include "glm/glm.hpp"
 #include <thread>
 
+#include "objects/Scene.h"
+
 class Graphics;
 
 class Raytracer
@@ -47,10 +49,12 @@ public:
     void trace();
 
     Graphics* graphics;
-    glm::vec3 *frameBuffer;
-    glm::ivec2 frameBufferSize;
+    Scene scene;
+
     bool isActive = true;
 
     std::thread traceThread;
+
+
 };
 

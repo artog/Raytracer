@@ -18,6 +18,7 @@ public:
     void start();
     void finish();
     bool isActive();
+    void swapBuffers();
 
 
     Gui gui;
@@ -27,7 +28,8 @@ public:
     GLuint shaderProgram;
     GLuint frameBuffer;
     GLuint vao;
-    std::vector<glm::vec3> pixelData;
+    std::vector<glm::vec3> backBuffer;
+    std::vector<glm::vec3> frontBuffer;
     glm::ivec2 pixelDataSize;
     GLFWwindow* window;
     
