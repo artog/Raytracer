@@ -1,15 +1,16 @@
 cmake_minimum_required ( VERSION 3.0.2 )
 
 project ( Raytracer )
-
+message(STATUS "Staring Raytracer")
 # Fetch all source and header files
 file(GLOB_RECURSE source_list RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "*.cpp" "*.hpp" "*.h" "*.c")
 file(GLOB_RECURSE resource_list RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "*.vert" "*.frag" "*.glsl")
 
-message(STATUS "Bin dir ${CMAKE_CURRENT_BINARY_DIR}")
+message(STATUS "Bin dir ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_BINARY_DIR}")
 foreach(item IN LISTS resource_list)
     message(STATUS ${item})
     add_custom_command(
+		POST_BUILD
         OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${item}"
         COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/${item}" "${CMAKE_CURRENT_BINARY_DIR}/${item}"
         DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${item}"
@@ -20,6 +21,11 @@ endforeach()
 #list(FILTER source_list EXCLUDE REGEX "binary_to_compressed_c.cpp") 
 
 add_executable ( Raytracer ${source_list} ${resource_list})
+
+# add_custom_command(TARGET ${PROJECT_NAME}
+#    POST_BUILD
+#    COMMAND 
+#)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)

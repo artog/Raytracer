@@ -10,6 +10,7 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <filesystem>
 
 using namespace std;
 
@@ -21,10 +22,10 @@ namespace glutil {
 	// Reads, compiles, links and returns a shader from the given paths
 	GLuint loadShader(const std::string &vertexPath, const std::string &fragmentPath) {
 
+		
 		cout << "Loading shader program with shaders:" << endl;
-		cout << "    Vertex:   " << vertexPath << endl;
-		cout << "    Fragment: " << fragmentPath << endl;
-
+		cout << "    Vertex:   " << std::filesystem::canonical(vertexPath) << endl;
+		cout << "    Fragment: " << std::filesystem::canonical(fragmentPath) << endl;
         
         
         // Read our shaders into the appropriate buffers
@@ -256,7 +257,7 @@ namespace glutil {
         //throw std::runtime_error(errorString.c_str());
     }
 
-
+#if false
     const char* textFileRead(const char *fn, bool fatalError)
     {
         /* Note: the `fatalError' thing is a bit of a hack, The proper course of
@@ -313,7 +314,7 @@ namespace glutil {
 
         return content;
     }
-
+#endif
 
 
     std::string GetShaderInfoLog(GLuint obj) {

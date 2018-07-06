@@ -7,7 +7,13 @@
 #include <chrono>
 #include "main.h"
 
-void main(int* argc, char* argv[]) {
+
+void trace(Raytracer raytracer) {
+	raytracer.trace();
+}
+
+
+int main(int* argc, char* argv[]) {
     
     
     Graphics graphics = Graphics();
@@ -20,8 +26,13 @@ void main(int* argc, char* argv[]) {
     //graphics.start();
     raytracer.init();
 
+	std::thread raytracerThread(trace, raytracer);
+
     graphics.mainLoop();
+
+	raytracerThread.join();
 
     graphics.finish();
 
+	return 0;
 }

@@ -1,10 +1,115 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Raytracer.cpp" />
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{95c5b08a-d7ff-40a3-a8ed-b4ce7ee37ebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="glad">
+      <UniqueIdentifier>{4ce510fc-3a16-4a95-ba93-bb3bfc9be096}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{fef6fc44-248c-4f9e-b168-34322c5c052b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{c2aa7561-73fb-4630-8585-95321aea5da0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{0658f2ae-20c7-4e19-aa12-b1b6127ba641}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="glad\glad.c">
+      <Filter>glad</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_impl_glfw_gl3.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="glutil.cpp" />
+    <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="Gui.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Raytracer.cpp" />
+    <ClCompile Include="Geometry\Ray.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Scene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Light.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="glad\glad.h">
+      <Filter>glad</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\khrplatform.h">
+      <Filter>glad</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_glfw_gl3.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_rect_pack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="glutil.h" />
+    <ClInclude Include="Graphics.h" />
+    <ClInclude Include="Gui.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="Raytracer.h" />
+    <ClInclude Include="..\external\dirent\dirent.h" />
+    <ClInclude Include="Geometry\Ray.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Scene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Light.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\particle.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\particle.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\simple.frag.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\simple.vert.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\simpleLine.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\simpleLine.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

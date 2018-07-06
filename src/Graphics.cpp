@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <thread>
 #include "glutil.h"
+#include <mutex>
 
 #define VERTEX_SHADER_PATH "shaders/simple.vert.glsl"
 #define FRAGMENT_SHADER_PATH "shaders/simple.frag.glsl"

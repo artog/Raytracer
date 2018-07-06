@@ -78,11 +78,12 @@ namespace glutil {
     */
     void fatal_error(std::string errorString, std::string title = std::string());
     
+#if 0
     /**
     * Helper function used to create a shader object from text in a file
     */
     const char* textFileRead(const char *fn, bool fatalError = true);
-
+#endif // 0
 
     /**
     * Helper function used to get log info (such as errors) about a shader object or shader program

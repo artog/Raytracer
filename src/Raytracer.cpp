@@ -1,6 +1,7 @@
 #include "Raytracer.h"
 #include "Graphics.h"
 #include "glm/glm.hpp"
+#include <iostream>
 
 using namespace glm;
 
@@ -36,4 +37,30 @@ void Raytracer::reset()
         graphics->pixelData[i].b = 0.f;
     }
     graphics->pixelDataSize = glm::ivec2(width,height);
+}
+
+void Raytracer::trace() 
+{
+	std::cout << "Starting trace..." << std::endl;
+	int &width = graphics->width;
+	int &height = graphics->height;
+
+	int sampleCount = 0, sampleLimit = 10000;
+
+	while (sampleCount < sampleLimit) {
+
+		for (size_t i = 0; i < width*height; i++)
+		{
+			graphics->pixelData[i].r *= 1.1f;
+			graphics->pixelData[i].g *= 1.1f;
+			graphics->pixelData[i].b *= 1.1f;
+		}
+		sampleCount++;
+	}
+	std::cout << "Trace complete!" << std::endl;
+}
+
+glm::vec3 Raytracer::sample(Geometry::Ray & r)
+{
+	return glm::vec3();
 }

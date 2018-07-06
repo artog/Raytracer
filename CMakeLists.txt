@@ -1,7 +1,16 @@
 cmake_minimum_required ( VERSION 3.0.2 )
 
+if (unix)
+
+endif(unix)
+
 project ( "Photon Mapper" )
 
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
+message(STATUS "Staring Photon Mapper")
 
 # Function to assign the path of a file as it source group
 # This will produce filter ("folders") in a VS project.
