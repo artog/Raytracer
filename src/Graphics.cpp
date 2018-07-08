@@ -17,7 +17,10 @@ void Graphics::render()
     GLfloat ratio;
     //mat4 viewMatrix, modelViewProjectionMatrix, modelViewMatrix, projectionMatrix;
 
-    glfwGetFramebufferSize(window, &width, &height);
+    int w, h;
+    glfwGetFramebufferSize(window, &w, &h);
+    width = w;
+    height = h;
     ratio = (GLfloat)width / (GLfloat)height;
 
     glViewport(0, 0, width, height);
@@ -26,7 +29,7 @@ void Graphics::render()
 
     glUseProgram(shaderProgram);
     /*
-    Render from pixelmap
+    Render from pixel map
     */
     static GLuint framebufferTexture = 0;
     if (framebufferTexture == 0) glGenTextures(1, &framebufferTexture);
@@ -35,7 +38,7 @@ void Graphics::render()
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F,
         pixelDataSize.x,
         pixelDataSize.y,
-        0, GL_RGB, GL_FLOAT, pixelData.data());
+        0, GL_RGB, GL_FLOAT, frontBuffer.data());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glUniform1i(glGetUniformLocation(shaderProgram, "framebuffer"), 0);
@@ -80,7 +83,7 @@ void Graphics::init(GLint width, GLint height)
     this->width = width;
     this->height = height;
 
-    window = glfwCreateWindow(width, height, "Raytracing using a Photon Map", NULL, NULL);
+    window = glfwCreateWindow(width, height, "Ray tracing using a Photon Map", NULL, NULL);
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -91,10 +94,10 @@ void Graphics::init(GLint width, GLint height)
     
     // Define the positions for each of the three vertices of the triangle
     const float positions[] = {
-        1.0f,   -1.0f, 0.0f,
-        1.0f,	  1.0f, 0.0f,
-        -1.0f,	 -1.0f, 0.0f,
-        -1.0f,	  1.0f, 0.0f
+         1.0f, -1.0f, 0.0f,
+         1.0f,  1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f,
+        -1.0f,  1.0f, 0.0f
     };
     // Create a handle for the position vertex buffer object
     GLuint positionBuffer;
@@ -120,6 +123,10 @@ void Graphics::init(GLint width, GLint height)
         FRAGMENT_SHADER_PATH
     );
     
+    frontBuffer = std::vector<glm::vec3>();
+    backBuffer = std::vector<glm::vec3>();
+
+
     gui.init(window);
 
     initialized = true;
@@ -147,5 +154,10 @@ void Graphics::finish()
 bool Graphics::isActive()
 {
     return active;
+}
+
+void Graphics::swapBuffers()
+{
+  frontBuffer.swap(backBuffer);
 }
 

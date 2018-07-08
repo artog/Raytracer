@@ -7,32 +7,21 @@
 #include <chrono>
 #include "main.h"
 
-
-void trace(Raytracer raytracer) {
-	raytracer.trace();
-}
-
-
-int main(int* argc, char* argv[]) {
+void main(int* argc, char* argv[]) {
     
     
     Graphics graphics = Graphics();
 
-    //std::thread raytracerThread([graphics]() {
-        Raytracer raytracer = Raytracer(&graphics);
-    //});
-    graphics.init(640, 480);
+    Raytracer raytracer = Raytracer(&graphics);
+    
+    graphics.init(128, 96);
 
-    //graphics.start();
     raytracer.init();
-
-	std::thread raytracerThread(trace, raytracer);
+    std::thread raytracerThread = std::thread(&Raytracer::trace, raytracer);
 
     graphics.mainLoop();
 
-	raytracerThread.join();
-
+    raytracerThread.join();
     graphics.finish();
 
-	return 0;
 }

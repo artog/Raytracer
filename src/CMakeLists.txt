@@ -33,6 +33,9 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 # Make the Raytracer project the start project in the solution
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Raytracer)
 
+file(COPY "shaders/simple.vert.glsl" DESTINATION "shaders")
+file(COPY "shaders/simple.frag.glsl" DESTINATION "shaders")
+
 # assign_source_group(${SOURCE_CODE})
 assign_source_group(${source_list})
 assign_source_group(${resource_list})
